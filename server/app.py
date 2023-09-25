@@ -34,13 +34,15 @@ class Plants(Resource):
         db.session.commit()
         return make_response(jsonify(new_plant.to_dict()), 201)
 
+
 class PlantByID(Resource):
     def get(self, id):
         # Implement GET /plants/:id route
-        plant = Plant.query.get(id)
+        plant = Plant.query.filter_by(id=id).first()
         if plant is None:
             return make_response(jsonify({"error": "Plant not found"}), 404)
-        return make_response(jsonify(plant.to_dict()), 200)
+        else:
+          return make_response(jsonify(plant.to_dict()), 200)
 
 api.add_resource(Plants, '/plants')
 api.add_resource(PlantByID, '/plants/<int:id>')
